@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlueHawk Settings</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    body {
+      padding: var(--spacing-lg);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .settings-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+      padding-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .settings-header img {
+      width: 48px;
+      height: 48px;
+    }
+
+    .settings-header h1 {
+      font-size: var(--font-size-2xl);
+      margin: 0;
+      background: linear-gradient(135deg, var(--title-primary), var(--title-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .settings-section {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .settings-section h2 {
+      font-size: var(--font-size-lg);
+      margin-bottom: var(--spacing-md);
+      padding-bottom: var(--spacing-sm);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--bg-tertiary);
+    }
+
+    .setting-row:last-child {
+      border-bottom: none;
+    }
+
+    .setting-info {
+      flex: 1;
+    }
+
+    .setting-info label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .setting-info .description {
+      font-size: var(--font-size-xs);
+      color: var(--accent-tertiary);
+    }
+
+    .setting-control {
+      margin-left: var(--spacing-md);
+    }
+
+    .setting-control input[type="text"],
+    .setting-control input[type="number"],
+    .setting-control input[type="password"],
+    .setting-control select {
+      min-width: 200px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+
+    .input-group input {
+      flex: 1;
+    }
+
+    .test-result {
+      margin-top: var(--spacing-sm);
+      padding: var(--spacing-sm);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-xs);
+    }
+
+    .test-result.success {
+      background: var(--severity-low-bg);
+      color: var(--severity-low);
+    }
+
+    .test-result.error {
+      background: var(--severity-critical-bg);
+      color: var(--severity-critical);
+    }
+
+    .save-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: var(--spacing-md) var(--spacing-lg);
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--spacing-sm);
+    }
+
+    .settings-content {
+      padding-bottom: 80px;
+    }
+  </style>
+</head>
+<body>
+  <div class="settings-header">
+    <img src="icons/icon48.png" alt="BlueHawk">
+    <div>
+      <h1>BlueHawk Settings</h1>
+      <span class="text-muted">Configure your API key scanner</span>
+    </div>
+  </div>
+
+  <div class="settings-content">
+    <!-- Scanning Settings -->
+    <section class="settings-section">
+      <h2>Scanning</h2>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="autoScan">Auto-Scan</label>
+          <span class="description">Automatically scan pages as you browse</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="autoScan">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="scanDelay">Scan Delay</label>
+          <span class="description">Wait time (ms) after page load before auto-scanning</span>
+        </div>
+        <div class="setting-control">
+          <input type="number" id="scanDelay" min="1000" max="30000" step="1000" value="3000">
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="minTokenLength">Min Token Length</label>
+          <span class="description">Minimum characters for detected tokens</span>
+        </div>
+        <div class="setting-control">
+          <input type="number" id="minTokenLength" min="10" max="100" value="15">
+        </div>
+      </div>
+    </section>
+
+    <!-- Analysis Settings -->
+    <section class="settings-section">
+      <h2>Analysis</h2>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="analysisDepth">Analysis Depth</label>
+          <span class="description">How thorough the scan should be</span>
+        </div>
+        <div class="setting-control">
+          <select id="analysisDepth">
+            <option value="quick">Quick - Pattern matching only</option>
+            <option value="standard">Standard - Patterns + Entropy</option>
+            <option value="deep" selected>Deep - Full AST analysis</option>
+            <option value="full">Full - All including ML</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="featurePatterns">Pattern Matching</label>
+          <span class="description">Regex-based detection of known API key formats</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="featurePatterns" checked disabled>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="featureEntropy">Entropy Analysis</label>
+          <span class="description">Detect high-entropy strings likely to be secrets</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="featureEntropy">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="featureAST">AST Analysis</label>
+          <span class="description">Deep JavaScript parsing for obfuscated credentials</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="featureAST">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="featureML">ML Classification</label>
+          <span class="description">Machine learning model for secret detection</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="featureML">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <section class="settings-section">
+      <h2>Filters</h2>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="skipSocialMedia">Skip Social Media</label>
+          <span class="description">Ignore Facebook, Twitter, Google Analytics, etc.</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="skipSocialMedia" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Token Validation -->
+    <section class="settings-section">
+      <h2>Token Validation</h2>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="validateTokens">Validate Tokens</label>
+          <span class="description">Test tokens against live APIs to check if active</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="validateTokens" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="bucketTakeover">Bucket Takeover Detection</label>
+          <span class="description">Scan for misconfigured S3/GCS/Azure buckets</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="bucketTakeover" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proxy Settings -->
+    <section class="settings-section">
+      <h2>Proxy</h2>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="proxyEnabled">Enable Proxy</label>
+          <span class="description">Route requests through security proxy (Burp/ZAP/Caido)</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="proxyEnabled">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row proxy-config">
+        <div class="setting-info">
+          <label for="proxyHost">Proxy Host</label>
+        </div>
+        <div class="setting-control">
+          <input type="text" id="proxyHost" value="127.0.0.1" placeholder="127.0.0.1">
+        </div>
+      </div>
+
+      <div class="setting-row proxy-config">
+        <div class="setting-info">
+          <label for="proxyPort">Proxy Port</label>
+        </div>
+        <div class="setting-control">
+          <input type="number" id="proxyPort" value="8080" min="1" max="65535">
+        </div>
+      </div>
+    </section>
+
+    <!-- Notifications -->
+    <section class="settings-section">
+      <h2>Notifications</h2>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="notifications">Desktop Notifications</label>
+          <span class="description">Show notifications when API keys are found</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="notifications" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="discordEnabled">Discord Webhook</label>
+          <span class="description">Send alerts to Discord channel</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="discordEnabled">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row discord-config">
+        <div class="setting-info">
+          <label for="discordWebhook">Webhook URL</label>
+        </div>
+        <div class="setting-control">
+          <div class="input-group">
+            <input type="text" id="discordWebhook" placeholder="https://discord.com/api/webhooks/...">
+            <button class="btn btn-secondary" id="testDiscord">Test</button>
+          </div>
+          <div class="test-result hidden" id="discordResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- History Settings -->
+    <section class="settings-section">
+      <h2>History</h2>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="saveHistory">Save Scan History</label>
+          <span class="description">Store found API keys locally</span>
+        </div>
+        <div class="setting-control">
+          <label class="toggle">
+            <input type="checkbox" id="saveHistory" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="maxHistory">Max History Items</label>
+          <span class="description">Maximum tokens to store</span>
+        </div>
+        <div class="setting-control">
+          <input type="number" id="maxHistory" value="1000" min="100" max="10000">
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label>Clear History</label>
+          <span class="description">Delete all stored findings</span>
+        </div>
+        <div class="setting-control">
+          <button class="btn btn-secondary" id="clearHistory">Clear All</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Export Settings -->
+    <section class="settings-section">
+      <h2>Export</h2>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <label for="defaultExport">Default Format</label>
+          <span class="description">Default export format for findings</span>
+        </div>
+        <div class="setting-control">
+          <select id="defaultExport">
+            <option value="json">JSON</option>
+            <option value="csv">CSV</option>
+            <option value="nuclei">Nuclei Templates</option>
+          </select>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="save-bar">
+    <button class="btn btn-secondary" id="resetBtn">Reset to Defaults</button>
+    <button class="btn btn-primary" id="saveBtn">Save Settings</button>
+  </div>
+
+  <script src="settings.js" type="module"></script>
+</body>
+</html>

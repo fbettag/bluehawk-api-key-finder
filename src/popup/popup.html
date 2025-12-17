@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlueHawk API Key Finder</title>
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container" id="app">
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="header-left">
+        <div class="logo">
+          <img src="icons/icon48.png" alt="BlueHawk" class="logo-icon" id="logoIcon">
+          <div class="logo-text">
+            <h1>BlueHawk</h1>
+            <span class="subtitle">API Key Finder</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-center">
+        <button class="mode-badge-btn" id="modeToggle">
+          <span class="mode-dot"></span>
+          <span class="mode-text">Manual</span>
+        </button>
+      </div>
+      <div class="header-right">
+        <button class="btn btn-icon btn-ghost" id="historyBtn" title="History">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </button>
+        <button class="btn btn-icon btn-ghost" id="settingsBtn" title="Settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Target Info -->
+    <div class="target-section">
+      <div class="target-info">
+        <div class="target-row">
+          <span class="target-label">Target:</span>
+          <span class="target-value truncate" id="targetUrl">Loading...</span>
+        </div>
+        <div class="target-row">
+          <span class="target-label">Scripts:</span>
+          <span class="target-value" id="scriptsInfo">Ready to scan</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scan Buttons -->
+    <div class="scan-section">
+      <button class="btn btn-primary" id="scanBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        Quick Scan
+      </button>
+      <button class="btn btn-fire" id="deepScanBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+          <path d="M8.5 8.5v.01"></path>
+          <path d="M16 15.5v.01"></path>
+          <path d="M12 12v.01"></path>
+          <path d="M11 17v.01"></path>
+          <path d="M7 14v.01"></path>
+        </svg>
+        Deep Scan
+      </button>
+    </div>
+
+    <!-- Progress Bar (hidden by default) -->
+    <div class="progress-section hidden" id="progressSection">
+      <div class="progress">
+        <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+      </div>
+      <span class="progress-text text-xs text-muted" id="progressText">Scanning...</span>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section">
+      <div class="results-header">
+        <h3>API Keys Found: <span id="tokenCount">0</span></h3>
+        <div class="results-actions">
+          <div class="dropdown" id="exportDropdown">
+            <button class="btn btn-sm btn-secondary" id="exportBtn">
+              Export
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="dropdown-menu">
+              <div class="dropdown-item" data-format="json">Export JSON</div>
+              <div class="dropdown-item" data-format="csv">Export CSV</div>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-ghost" id="clearBtn" title="Clear results">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18"></path>
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Results List -->
+      <div class="results-list" id="resultsList">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-state-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <p>No API keys found yet</p>
+          <span class="text-xs text-muted">Click "Quick Scan" to start scanning</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Footer -->
+    <div class="stats-section">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-value" id="statValid">0</span>
+          <span class="stat-label" style="color: var(--severity-critical)">Valid</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statInvalid">0</span>
+          <span class="stat-label" style="color: var(--accent-muted)">Invalid</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="statUnknown">0</span>
+          <span class="stat-label" style="color: var(--severity-medium)">Unknown</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Token Detail Modal -->
+  <div class="modal-backdrop" id="tokenModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">Token Details</h3>
+        <button class="btn btn-icon btn-ghost" id="closeModal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Filled by JS -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modalCopyBtn">Copy Token</button>
+        <button class="btn btn-primary" id="modalMarkViewedBtn">Mark Viewed</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

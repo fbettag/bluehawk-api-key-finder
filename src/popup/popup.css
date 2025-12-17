@@ -1,0 +1,708 @@
+/* ============================================
+   BLUEHAWK API KEY FINDER - Modern Tech Theme
+   Design: Clean, Professional, Dark Tech
+   ============================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* CSS Variables for Theming */
+:root {
+  /* Blue theme (default - manual mode) */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --accent-primary: #06b6d4;
+  --accent-secondary: #3b82f6;
+  --accent-hover: #22d3ee;
+  --accent-glow: rgba(6, 182, 212, 0.3);
+  --accent-subtle: rgba(6, 182, 212, 0.1);
+}
+
+body {
+  width: 520px;
+  min-height: 450px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
+  color: #e2e8f0;
+  overflow-x: hidden;
+  transition: background 0.3s ease;
+}
+
+/* Red theme (auto mode / scanning) - muted tones */
+body.theme-red {
+  --bg-primary: #1a0f0f;
+  --bg-secondary: #2a1a1a;
+  --accent-primary: #c45c5c;
+  --accent-secondary: #a04545;
+  --accent-hover: #d47070;
+  --accent-glow: rgba(180, 80, 80, 0.3);
+  --accent-subtle: rgba(180, 80, 80, 0.1);
+}
+
+.container {
+  padding: 24px;
+}
+
+/* ============================================
+   HEADER - Modern Tech Style
+   ============================================ */
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, var(--accent-subtle) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 2px;
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.header-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+}
+
+.subtitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.author {
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.author a {
+  color: #06b6d4;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.author a:hover {
+  color: #22d3ee;
+}
+
+/* Mode Indicator */
+.mode-indicator {
+  margin-top: 10px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  display: inline-block;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mode-indicator.clickable {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mode-indicator.clickable:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.mode-indicator.auto-on {
+  background: rgba(180, 80, 80, 0.2);
+  color: #c45c5c;
+  border-color: rgba(180, 80, 80, 0.3);
+}
+
+.mode-indicator.auto-off {
+  background: rgba(6, 182, 212, 0.15);
+  color: #06b6d4;
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+/* ============================================
+   QUICK ACTIONS - Modern Pills
+   ============================================ */
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.quick-btn {
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+  color: #e2e8f0;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.quick-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--accent-subtle), transparent);
+  transition: left 0.5s;
+}
+
+.quick-btn:hover::before {
+  left: 100%;
+}
+
+.quick-btn:hover {
+  transform: translateY(-2px);
+  background: var(--accent-subtle);
+  border-color: var(--accent-glow);
+  color: var(--accent-primary);
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.quick-btn.active {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+/* ============================================
+   SCAN BUTTONS - Modern Glass Morphism
+   ============================================ */
+
+.controls {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.scan-button {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px var(--accent-glow);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+}
+
+.scan-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.scan-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.scan-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.scan-button:active {
+  transform: translateY(-1px);
+}
+
+.deep-scan-button {
+  background: linear-gradient(135deg, #5a9a7a 0%, #4a7a65 100%);
+  margin-top: 12px;
+  font-size: 13px;
+  padding: 12px 28px;
+}
+
+.deep-scan-button:hover {
+  box-shadow: 0 8px 24px rgba(90, 154, 122, 0.4);
+}
+
+/* ============================================
+   ALERTS & NOTIFICATIONS
+   ============================================ */
+
+.alert-banner {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  padding: 14px 18px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 20px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+  animation: pulse 2s infinite;
+  font-size: 12px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.01);
+  }
+}
+
+/* ============================================
+   LOADING SPINNER - Modern
+   ============================================ */
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 20px;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--accent-subtle);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   STATS PANEL - Glass Card
+   ============================================ */
+
+.stats {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  font-weight: 500;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.stat-value {
+  font-weight: 700;
+  color: var(--accent-primary);
+  font-size: 14px;
+}
+
+/* ============================================
+   RESULTS - Modern Cards
+   ============================================ */
+
+.results {
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.result-item {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s;
+}
+
+.result-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border-color: var(--accent-glow);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.result-icon {
+  font-size: 22px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.result-title {
+  font-weight: 600;
+  color: #e2e8f0;
+  font-size: 13px;
+  flex: 1;
+}
+
+.result-type {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.result-script {
+  font-size: 11px;
+  color: #64748b;
+  margin-bottom: 10px;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.result-script a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.result-script a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+.result-token {
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 3px solid var(--accent-primary);
+  padding: 12px;
+  border-radius: 8px;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 11px;
+  word-break: break-all;
+  color: #cbd5e1;
+  margin-top: 10px;
+  line-height: 1.6;
+}
+
+/* ============================================
+   VALIDATION BADGES
+   ============================================ */
+
+.validation-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  display: inline-block;
+  margin-left: auto;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.validation-valid {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  animation: pulse 2s infinite;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+}
+
+.validation-invalid {
+  background: rgba(100, 116, 139, 0.3);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+.validation-unknown {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+.validation-warning {
+  background: rgba(239, 68, 68, 0.1);
+  border: 2px solid #ef4444;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 12px 0;
+  font-size: 11px;
+  color: #fca5a5;
+  font-weight: 600;
+  animation: warningPulse 1.5s infinite;
+}
+
+@keyframes warningPulse {
+  0%, 100% {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+  }
+  50% {
+    border-color: #f87171;
+    background: rgba(239, 68, 68, 0.15);
+  }
+}
+
+.validation-info {
+  background: rgba(59, 130, 246, 0.1);
+  border-left: 3px solid #dc2626;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 12px 0;
+  font-size: 11px;
+  color: #93c5fd;
+}
+
+.result-item-critical {
+  border: 2px solid #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+  box-shadow: 0 4px 24px rgba(239, 68, 68, 0.3);
+  animation: criticalPulse 2s infinite;
+}
+
+@keyframes criticalPulse {
+  0%, 100% {
+    box-shadow: 0 4px 24px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(239, 68, 68, 0.5);
+  }
+}
+
+/* ============================================
+   BUCKET TAKEOVER
+   ============================================ */
+
+.bucket-item {
+  border-left: 4px solid #f59e0b;
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.validation-vulnerable {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  animation: pulse 2s infinite;
+}
+
+/* ============================================
+   VIEWED BADGE
+   ============================================ */
+
+.mark-viewed-btn {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+.mark-viewed-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.mark-viewed-btn:active {
+  transform: translateY(0);
+}
+
+.viewed-badge {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  display: inline-block;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.viewed-badge-animate {
+  animation: fireAppear 0.5s ease-out;
+}
+
+@keyframes fireAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5) rotate(-10deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ============================================
+   NO RESULTS
+   ============================================ */
+
+.no-results {
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  color: #94a3b8;
+}
+
+.no-results-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer {
+  text-align: center;
+  color: #64748b;
+  font-size: 11px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  font-weight: 500;
+}
+
+/* ============================================
+   SCROLLBAR - Modern Dark
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-glow);
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+}
+
+/* ============================================
+   RESPONSIVE & ANIMATIONS
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Glow effect for critical items */
+.result-item-critical::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-radius: 16px;
+  z-index: -1;
+  opacity: 0.3;
+  filter: blur(10px);
+}
+
+.result-item-critical {
+  position: relative;
+}

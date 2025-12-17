@@ -1,0 +1,67 @@
+{
+  "manifest_version": 3,
+  "name": "BlueHawk API Key Finder",
+  "short_name": "BlueHawk",
+  "version": "1.0.0",
+  "description": "Security tool for bug bounty hunters and red teamers - detects hardcoded API keys, secrets, and credentials in JavaScript",
+  "author": "fbettag",
+  "homepage_url": "https://github.com/fbettag/bluehawk-api-key-finder",
+  "minimum_chrome_version": "110",
+  "offline_enabled": false,
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "notifications",
+    "alarms",
+    "webRequest",
+    "proxy"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "BlueHawk - Scan for API Keys",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "detector.js",
+        "validator.js",
+        "deep-crawler.js",
+        "bucket-takeover-detector.js",
+        "token-scanner-worker.js",
+        "workers/*.js",
+        "injected/*.js",
+        "vendors/*.js",
+        "shared.js",
+        "analysis.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlueHawk API Key Finder</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><img src="icons/icon48.png" alt="BlueHawk" class="header-icon"> BlueHawk</h1>
+      <p class="subtitle">API Key Finder</p>
+      <p class="author">by <a href="https://github.com/fbettag" target="_blank">fbettag</a></p>
+      <div class="mode-indicator clickable" id="modeIndicator" title="Click to toggle auto mode"></div>
+    </div>
+
+    <div class="quick-actions">
+      <button class="quick-btn" id="settingsBtn">⚙️ Settings</button>
+      <button class="quick-btn" id="historyBtn">📜 History</button>
+    </div>
+
+    <div class="controls">
+      <button id="scanBtn" class="scan-button">Scan Page</button>
+      <button id="deepScanBtn" class="scan-button deep-scan-button">🕷️ Deep Scan (Depth 10)</button>
+      <div class="loading" id="loading" style="display: none;">
+        <div class="spinner"></div>
+        <span id="loadingText">Analyzing...</span>
+      </div>
+    </div>
+
+    <div class="stats" id="stats" style="display: none;">
+      <div class="stat-item">
+        <span class="stat-label">Scripts Analyzed:</span>
+        <span class="stat-value" id="scriptsCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Tokens Found:</span>
+        <span class="stat-value" id="tokensCount">0</span>
+      </div>
+    </div>
+
+    <div class="results" id="results"></div>
+
+    <div class="footer">
+      <p>Detects API keys, JWT tokens, secrets, and hardcoded credentials</p>
+      <p style="font-size: 10px; margin-top: 5px;">v1.0.0</p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

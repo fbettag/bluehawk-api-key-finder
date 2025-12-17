@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History - BlueHawk API Key Finder</title>
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    body {
+      width: 100%;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .stat-card .number {
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-card .label {
+      color: #666;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toolbar button:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-export {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .btn-clear {
+      background: #f5576c;
+      color: white;
+    }
+
+    .btn-filter {
+      background: #667eea;
+      color: white;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .history-item {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .history-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .favicon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+
+    .history-info {
+      flex: 1;
+    }
+
+    .history-title {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .history-url {
+      font-size: 12px;
+      color: #667eea;
+      text-decoration: none;
+    }
+
+    .history-url:hover {
+      text-decoration: underline;
+    }
+
+    .history-meta {
+      display: flex;
+      gap: 15px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .history-timestamp {
+      color: #999;
+      font-size: 12px;
+    }
+
+    .tokens-summary {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .token-badge {
+      background: #f5f5f5;
+      padding: 5px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .tokens-list {
+      display: none;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+
+    .tokens-list.expanded {
+      display: block;
+    }
+
+    .toggle-tokens {
+      background: none;
+      border: none;
+      color: #667eea;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background 0.2s;
+    }
+
+    .toggle-tokens:hover {
+      background: #f5f5f5;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .empty-state-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    .empty-state h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .empty-state p {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><img src="icons/icon48.png" alt="BlueHawk" style="width: 36px; height: 36px; vertical-align: middle; margin-right: 10px; border-radius: 8px;"> Token History</h1>
+      <p class="author">by <a href="https://github.com/fbettag" target="_blank">fbettag</a></p>
+    </div>
+
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <div class="number" id="totalScans">0</div>
+        <div class="label">Scans Performed</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="totalTokens">0</div>
+        <div class="label">Tokens Found</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="uniqueSites">0</div>
+        <div class="label">Unique Sites</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="lastScan">-</div>
+        <div class="label">Last Scan</div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search by URL, token type...">
+      </div>
+      <button class="btn-export" id="exportJsonBtn">📥 Export JSON</button>
+      <button class="btn-export" id="exportCsvBtn">📊 Export CSV</button>
+      <button class="btn-clear" id="clearHistoryBtn">🗑️ Clear History</button>
+    </div>
+
+    <div class="history-list" id="historyList"></div>
+
+    <div class="empty-state" id="emptyState" style="display: none;">
+      <div class="empty-state-icon">📭</div>
+      <h2>No records found</h2>
+      <p>Start scanning pages to see history here!</p>
+    </div>
+  </div>
+
+  <script src="history.js"></script>
+</body>
+</html>
